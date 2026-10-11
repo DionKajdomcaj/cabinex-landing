@@ -1,0 +1,21 @@
+index.html
+  s_196990b458357a::t_6a0f2a1e36c1d4 301
+scripts/analytics.js
+  s_196990b458357a::t_6a0f2a1e36c1d4 8,11-15,22-23
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.6.22",
+  "base_commit_sha": "96f7a289445304dbaa3bd989a4e17135ab4e3405",
+  "prompts": {},
+  "sessions": {
+    "s_196990b458357a": {
+      "agent_id": {
+        "tool": "codex",
+        "id": "01a12c6f-34b4-7ed3-9355-27605d632d28",
+        "model": "gpt-6.1-sol"
+      },
+      "human_author": "DionKajdomcaj <dion.kajdomcaj@outlook.com>"
+    }
+  }
+}
