@@ -1,0 +1,614 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>cabinex — Faster proposals for kitchen professionals</title>
+<meta name="description" content="Design a client’s kitchen, render it, and send a priced proposal, in minutes!">
+<meta name="theme-color" content="#fcdfcb">
+<link rel="icon" href="assets/cabinex-mark.svg" type="image/svg+xml">
+<meta property="og:title" content="cabinex — Faster proposals for kitchen professionals">
+<meta property="og:description" content="Design a client’s kitchen, render it, and send a priced proposal, in minutes!">
+<meta property="og:type" content="website">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Roboto+Mono:wght@400;500&family=Source+Serif+4:opsz,wght@8..60,400;8..60,500&display=swap" rel="stylesheet">
+<style>
+/* ============================================================
+   cabinex landing — static rebuild
+   Reference mocks: 1280px desktop / 375px mobile
+   ============================================================ */
+
+:root{
+  --peach:#fcdfcb;
+  --brown:#bc8c67;
+  --ink:#000;
+  --panel:#f6f8fb;
+  --panel-border:#6c6c6c;
+  --gray:#6c6c6c;
+  --yellow:#fff546;
+  --blue:#0071e2;
+  --grid:#dbe0ec;
+
+  --sans:"Inter","Helvetica Neue",Helvetica,Arial,system-ui,sans-serif;
+  --serif:"Source Serif 4",Charter,Georgia,"Times New Roman",serif;
+  --mono:"Roboto Mono",ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;
+
+  --gutter:24px;
+}
+
+*,*::before,*::after{box-sizing:border-box}
+
+html{-webkit-text-size-adjust:100%}
+
+body{
+  margin:0;
+  background:var(--peach);
+  color:var(--ink);
+  font-family:var(--sans);
+  -webkit-font-smoothing:antialiased;
+  -moz-osx-font-smoothing:grayscale;
+  overflow-x:hidden;
+}
+
+img{display:block;max-width:100%}
+a{color:inherit}
+
+.wrap{
+  max-width:1280px;
+  margin:0 auto;
+  padding:0 var(--gutter);
+}
+
+/* ---------- textured hero background ---------- */
+
+.hero{
+  position:relative;
+  isolation:isolate;
+  padding-bottom:186px;          /* card bottom -> colophon */
+}
+.hero::before{
+  content:"";
+  position:absolute;
+  inset:0;
+  z-index:-1;
+  background-image:url("assets/overlay.png");
+  background-repeat:no-repeat;
+  background-size:cover;         /* single grain plate — nothing to tile, so no seams */
+  background-position:top center;
+  opacity:var(--grain,.4);       /* subtle halftone against the peach base */
+  --dissolve:linear-gradient(to bottom,
+      transparent 0%,
+      rgba(0,0,0,.06) 8%,
+      rgba(0,0,0,.22) 18%,
+      rgba(0,0,0,.48) 30%,
+      rgba(0,0,0,.78) 42%,
+      #000 54%,
+      rgba(0,0,0,.86) 64%,
+      rgba(0,0,0,.52) 75%,
+      rgba(0,0,0,.20) 84%,
+      rgba(0,0,0,.04) 92%,
+      transparent 98%,
+      transparent 100%);
+  -webkit-mask-image:var(--dissolve);
+          mask-image:var(--dissolve);
+}
+
+/* ---------- header / logo ---------- */
+
+.masthead{
+  padding-top:20px;
+  display:flex;
+  justify-content:center;
+}
+.logo{
+  display:inline-flex;
+  align-items:center;
+  gap:5px;
+  text-decoration:none;
+}
+.logo svg{height:20px;width:auto;display:block}
+.logo span{
+  font-size:21px;
+  font-weight:400;
+  letter-spacing:-.018em;
+  line-height:1;
+}
+
+/* ---------- hero copy ---------- */
+
+.hero-copy{text-align:center}
+
+h1{
+  margin:0;
+  padding-top:91px;              /* logo bottom -> cap top */
+  font-size:clamp(44px,6.1vw,68px);
+  font-weight:500;
+  line-height:1.18;
+  letter-spacing:-.005em;
+  text-wrap:balance;
+}
+
+.tagline{
+  margin:11px 0 0;
+  font-family:var(--serif);
+  font-size:18px;
+  line-height:1.3;
+  letter-spacing:.002em;
+}
+
+.cta-row{display:flex;justify-content:center;margin:34px 0 0}
+
+.cta{
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+  min-height:46px;
+  padding:0 15px;
+  background:var(--ink);
+  color:#fff;
+  font-size:14px;
+  font-weight:500;
+  letter-spacing:-.005em;
+  text-decoration:none;
+  border-radius:0;
+  transition:transform .15s ease, opacity .15s ease;
+}
+.cta:hover{opacity:.86}
+.cta:active{transform:translateY(1px)}
+.cta:focus-visible{outline:3px solid var(--brown);outline-offset:3px}
+
+/* ---------- product shot (fixed 960x608, scaled to fit) ---------- */
+
+.shot-area{margin-top:62px}
+
+.shot-fit{
+  width:100%;
+  max-width:960px;
+  margin:0 auto;
+  position:relative;
+  height:608px;                  /* overridden by script */
+}
+
+.shot{
+  position:absolute;
+  top:0;left:50%;
+  width:960px;
+  height:608px;
+  transform-origin:top center;
+  transform:translateX(-50%) scale(var(--shot-scale,1));
+  background:var(--panel);
+  border:2px solid var(--panel-border);
+  border-radius:22px;
+  box-shadow:0 18px 40px -22px rgba(90,50,20,.45);
+  padding:75px 20px 20px;
+  overflow:hidden;
+}
+
+.shot h2{
+  margin:0;
+  font-size:22px;
+  font-weight:700;
+  letter-spacing:-.025em;
+  line-height:1.31;
+}
+.shot .shot-sub{
+  margin:-2px 0 0;
+  font-family:var(--serif);
+  font-size:23px;
+  line-height:1.3;
+  letter-spacing:-.018em;
+  color:var(--gray);
+}
+
+/* tiles */
+
+.tiles{
+  display:grid;
+  grid-template-columns:repeat(3,1fr);
+  gap:11px;
+  margin-top:19px;
+  height:118px;
+}
+.tile{
+  position:relative;
+  background:#fff;
+  border-radius:6px;
+  padding:6px 10px;
+  overflow:hidden;
+}
+.tile-label{
+  font-family:var(--mono);
+  font-size:11px;
+  letter-spacing:-.035em;
+  line-height:1;
+  color:#111;
+}
+.tile-value{
+  position:absolute;
+  left:10px;
+  bottom:4px;
+  font-size:29px;
+  font-weight:700;
+  letter-spacing:-.04em;
+  line-height:1;
+  display:flex;
+  align-items:flex-start;
+  gap:1px;
+}
+.tile-value sup{
+  font-size:.62em;
+  font-weight:700;
+  line-height:1;
+  top:0;
+  position:relative;
+}
+.tile-unit{
+  font-family:var(--mono);
+  font-size:11px;
+  font-weight:400;
+  letter-spacing:-.02em;
+  align-self:flex-end;
+  padding-bottom:3px;
+  margin-left:4px;
+}
+.swatch{
+  position:absolute;
+  top:7px;right:12px;
+  width:143px;height:103px;
+  background:var(--yellow);
+}
+.spark{
+  position:absolute;
+  top:6px;right:8px;
+  width:28px;height:28px;
+  color:#111;
+}
+.delta{
+  position:absolute;
+  right:10px;bottom:6px;
+  font-family:var(--mono);
+  font-size:13px;
+  letter-spacing:-.03em;
+  line-height:1;
+  color:var(--blue);
+}
+
+.tile-media{
+  position:absolute;
+  top:7px;left:10px;
+  width:103px;height:103px;
+  object-fit:cover;
+  border-radius:2px;
+}
+.badge{
+  position:absolute;
+  top:7px;left:126px;
+  display:inline-flex;
+  align-items:center;
+  height:16px;
+  padding:0 9px;
+  border-radius:999px;
+  background:var(--yellow);
+  font-family:var(--mono);
+  font-size:11px;
+  letter-spacing:-.02em;
+  line-height:1;
+  color:#111;
+}
+.tile-note{
+  position:absolute;
+  left:126px;right:10px;bottom:5px;
+  margin:0;
+  font-size:12px;
+  font-weight:700;
+  line-height:18px;
+  letter-spacing:-.045em;
+}
+
+/* chart panel */
+
+.chart{
+  position:relative;
+  margin-top:14px;
+  height:302px;
+  background:#fff;
+  border-radius:6px;
+  padding:16px 17px;
+}
+.chart-title{
+  font-family:var(--mono);
+  font-size:11px;
+  letter-spacing:-.035em;
+  line-height:1;
+  color:#111;
+}
+
+.plot{
+  position:absolute;
+  left:47px;right:23px;
+  top:60.5px;
+  height:197.5px;             /* 240 gridline -> baseline */
+}
+.plot .gridline{
+  position:absolute;
+  left:-3px;right:0;
+  height:1px;
+  background:var(--grid);
+}
+.plot .ylabel{
+  position:absolute;
+  right:calc(100% + 6px);
+  transform:translateY(-50%);
+  font-family:var(--mono);
+  font-size:11px;
+  line-height:1;
+  color:var(--gray);
+  white-space:nowrap;
+}
+.bars{
+  position:absolute;
+  inset:auto 0 0 0;
+  height:197.5px;
+  display:flex;
+  align-items:flex-end;
+  justify-content:space-between;
+}
+.bars i{
+  display:block;
+  width:3px;
+  background:var(--ink);
+}
+.peak-pill{
+  position:absolute;
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+  width:32px;height:17px;
+  border-radius:999px;
+  background:var(--yellow);
+  font-family:var(--mono);
+  font-size:11px;
+  line-height:1;
+  color:#111;
+  transform:translateX(-50%);
+}
+.xlabel{
+  position:absolute;
+  top:calc(100% + 11px);
+  transform:translateX(-50%);
+  font-family:var(--mono);
+  font-size:11px;
+  line-height:1;
+  color:var(--gray);
+  white-space:nowrap;
+}
+
+/* ---------- footer ---------- */
+
+.colophon{
+  margin:0;
+  font-family:var(--serif);
+  font-size:18.5px;
+  line-height:1.25;
+  color:var(--brown);
+}
+.colophon a{text-decoration:none}
+.colophon a:hover{text-decoration:underline}
+
+.footer-bleed{
+  margin-top:20px;
+  width:100%;
+  overflow:hidden;
+}
+
+.plank{
+  display:block;
+  width:100%;
+  height:auto;
+  aspect-ratio:1235/287;
+  object-fit:cover;
+  -webkit-mask-image:
+    linear-gradient(to bottom,transparent 0,#000 14%,#000 86%,transparent 100%),
+    linear-gradient(to right,transparent 0,#000 2.5%,#000 97.5%,transparent 100%);
+          mask-image:
+    linear-gradient(to bottom,transparent 0,#000 14%,#000 86%,transparent 100%),
+    linear-gradient(to right,transparent 0,#000 2.5%,#000 97.5%,transparent 100%);
+  -webkit-mask-composite:source-in;
+          mask-composite:intersect;
+}
+
+.wordmark{
+  margin:30px 0 0;
+  padding:0 0 40px;
+  font-size:100px;               /* fitted by script to the plank width */
+  font-weight:400;
+  line-height:.78;
+  letter-spacing:-.012em;
+  color:var(--brown);
+  text-align:center;
+  white-space:nowrap;
+  user-select:none;
+}
+.wordmark span{display:inline-block}
+
+/* ============================================================
+   mobile
+   ============================================================ */
+
+@media (max-width:760px){
+  :root{--gutter:22px}
+
+  .hero{padding-bottom:95px}
+
+  h1{
+    padding-top:39px;
+    font-size:34px;
+    line-height:1.06;
+    letter-spacing:-.03em;
+  }
+  .tagline{
+    margin-top:15px;
+    font-size:17px;
+    line-height:1.33;
+    letter-spacing:-.02em;
+  }
+  .cta-row{margin-top:22px}
+  .shot-area{margin-top:51px}
+
+  .colophon{text-align:center}
+  .footer-bleed{margin-top:16px}
+  .plank{aspect-ratio:334/128}
+  .wordmark{
+    margin-top:14px;
+    padding-bottom:30px;
+    letter-spacing:-.045em;
+  }
+}
+
+@media (max-width:360px){
+  :root{--gutter:18px}
+  h1{font-size:31px}
+  .tagline{font-size:17px}
+}
+
+@media (prefers-reduced-motion:reduce){
+  *{transition:none !important}
+}
+</style>
+</head>
+<body>
+
+<div class="hero">
+  <header class="masthead wrap">
+    <div class="logo">
+      <svg viewBox="0 0 23 25" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false">
+        <path d="M21.29 24.07H1.15C0.51 24.07 0 23.55 0 22.92V2.32C0 1.04 1.04 0 2.32 0H21.29C22.32 0 22.83 1.24 22.1 1.96L13.69 10.37C12.78 11.28 12.78 12.77 13.69 13.68L22.1 22.1C22.82 22.82 22.31 24.06 21.29 24.06V24.07Z" fill="currentColor"/>
+      </svg>
+      <span>cabinex</span>
+    </div>
+  </header>
+
+  <main>
+    <div class="hero-copy wrap">
+      <h1>Faster proposals for<br>kitchen professionals</h1>
+      <p class="tagline">Design a client’s kitchen, render it, and send a priced proposal, in minutes!</p>
+      <p class="cta-row">
+        <a class="cta" href="https://calendly.com/admin-cabinex/30min?back=1">Request a demo</a>
+      </p>
+    </div>
+
+    <div class="shot-area wrap">
+      <div class="shot-fit">
+        <div class="shot" role="img" aria-label="cabinex dashboard preview showing daily impact metrics and a carbon emissions trend chart">
+          <h2>Good morning, Acme Inc</h2>
+          <p class="shot-sub">Your daily impact metrics are ready to review.</p>
+
+          <div class="tiles">
+            <div class="tile">
+              <div class="tile-label">192,000 tCO₂e</div>
+              <div class="swatch"></div>
+              <div class="tile-value">56<sup>%</sup></div>
+            </div>
+
+            <div class="tile">
+              <div class="tile-label">Energy consumption</div>
+              <svg class="spark" viewBox="0 0 28 28" aria-hidden="true">
+                <g stroke="currentColor" stroke-width="1.4" stroke-linecap="round">
+                  <line x1="14" y1="3" x2="14" y2="25"/>
+                  <line x1="5.5" y1="7" x2="22.5" y2="21"/>
+                  <line x1="22.5" y1="7" x2="5.5" y2="21"/>
+                </g>
+              </svg>
+              <div class="tile-value">583.7<span class="tile-unit">MWh</span></div>
+              <div class="delta">↓12.4%</div>
+            </div>
+
+            <div class="tile">
+              <img class="tile-media" src="assets/moss.jpg" alt="" width="206" height="206" loading="lazy" decoding="async">
+              <span class="badge">Forecast</span>
+              <p class="tile-note">You're 16% off your<br>2027 emissions goal</p>
+            </div>
+          </div>
+
+          <div class="chart">
+            <div class="chart-title">Carbon emissions trend</div>
+            <div class="plot">
+              <div class="gridline" style="top:0"><span class="ylabel" style="top:0">240</span></div>
+              <div class="gridline" style="top:65.75px"><span class="ylabel" style="top:0">160</span></div>
+              <div class="gridline" style="top:131.5px"><span class="ylabel" style="top:0">80</span></div>
+              <div class="gridline" style="top:197px"><span class="ylabel" style="top:0">0</span></div>
+              <div class="bars" id="bars"></div>
+              <span class="peak-pill" style="left:61.1%;top:-8px">220</span>
+              <span class="xlabel" style="left:10.4%">Feb</span>
+              <span class="xlabel" style="left:30.3%">Mar</span>
+              <span class="xlabel" style="left:50.1%">Apr</span>
+              <span class="xlabel" style="left:70%">May</span>
+              <span class="xlabel" style="left:89.8%">Jun</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </main>
+</div>
+
+<footer>
+  <div class="wrap">
+    <p class="colophon">© 2025 &nbsp;·&nbsp; All rights reserved ·
+      <a href="mailto:admin@cabinex.app">admin@cabinex.app</a>
+    </p>
+  </div>
+  <div class="footer-bleed">
+    <img class="plank" src="assets/plank.jpg" alt="" width="1235" height="287" loading="lazy" decoding="async">
+    <p class="wordmark" aria-hidden="true"><span>cabinex</span></p>
+  </div>
+</footer>
+
+<script>
+(function () {
+  /* bars: weekly carbon figures read off the reference chart (0–240 scale) */
+  var V = [51,53,58,63,67,72,76,80,88,94,100,105,113,123,131,139,150,162,
+           172,181,195,209,220,213,203,189,176,166,158,151,146,140,134,131,126,123,119];
+  var host = document.getElementById('bars');
+  var html = '';
+  for (var i = 0; i < V.length; i++) {
+    html += '<i style="height:' + (V[i] / 240 * 197.5).toFixed(1) + 'px"></i>';
+  }
+  host.innerHTML = html;
+
+  /* the dashboard is a fixed 960x608 composition; scale it to the column */
+  var fit = document.querySelector('.shot-fit');
+  function resize() {
+    var s = Math.min(1, fit.clientWidth / 960);
+    fit.style.setProperty('--shot-scale', s);
+    fit.style.height = (608 * s) + 'px';
+  }
+  resize();
+  if (window.ResizeObserver) new ResizeObserver(resize).observe(fit);
+  else window.addEventListener('resize', resize);
+
+  /* the wordmark spans exactly the same width as the plank above it */
+  var bleed = document.querySelector('.footer-bleed');
+  var mark = document.querySelector('.wordmark');
+  var ink = mark.firstElementChild;
+  function fitMark() {
+    var target = bleed.clientWidth;
+    if (!target) return;
+    for (var i = 0; i < 3; i++) {
+      var cs = getComputedStyle(mark);
+      var cur = parseFloat(cs.fontSize);
+      var ls = parseFloat(cs.letterSpacing) || 0;   /* trailing space after the last glyph */
+      var w = ink.getBoundingClientRect().width;
+      if (!w) return;
+      mark.style.fontSize = (cur * (target + ls) / w).toFixed(2) + 'px';
+    }
+  }
+  fitMark();
+  if (document.fonts && document.fonts.ready) document.fonts.ready.then(fitMark);
+  if (window.ResizeObserver) new ResizeObserver(fitMark).observe(bleed);
+  else window.addEventListener('resize', fitMark);
+})();
+</script>
+</body>
+</html>
