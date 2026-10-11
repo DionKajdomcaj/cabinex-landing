@@ -158,231 +158,48 @@ h1{
 .cta:active{transform:translateY(1px)}
 .cta:focus-visible{outline:3px solid var(--brown);outline-offset:3px}
 
-/* ---------- product shot (fixed 960x608, scaled to fit) ---------- */
+/* ---------- video thumbnail ---------- */
 
 .shot-area{margin-top:62px}
 
-.shot-fit{
+.video-preview{
+  position:relative;
   width:100%;
   max-width:960px;
   margin:0 auto;
-  position:relative;
-  height:608px;                  /* overridden by script */
-}
-
-.shot{
-  position:absolute;
-  top:0;left:50%;
-  width:960px;
-  height:608px;
-  transform-origin:top center;
-  transform:translateX(-50%) scale(var(--shot-scale,1));
-  background:var(--panel);
+  overflow:hidden;
   border:2px solid var(--panel-border);
   border-radius:22px;
+  background:#222;
   box-shadow:0 18px 40px -22px rgba(90,50,20,.45);
-  padding:75px 20px 20px;
-  overflow:hidden;
 }
-
-.shot h2{
-  margin:0;
-  font-size:22px;
-  font-weight:700;
-  letter-spacing:-.025em;
-  line-height:1.31;
+.video-preview img{
+  width:100%;
+  height:auto;
+  aspect-ratio:16/9;
 }
-.shot .shot-sub{
-  margin:-2px 0 0;
-  font-family:var(--serif);
-  font-size:23px;
-  line-height:1.3;
-  letter-spacing:-.018em;
-  color:var(--gray);
-}
-
-/* tiles */
-
-.tiles{
-  display:grid;
-  grid-template-columns:repeat(3,1fr);
-  gap:11px;
-  margin-top:19px;
-  height:118px;
-}
-.tile{
-  position:relative;
-  background:#fff;
-  border-radius:6px;
-  padding:6px 10px;
-  overflow:hidden;
-}
-.tile-label{
-  font-family:var(--mono);
-  font-size:11px;
-  letter-spacing:-.035em;
-  line-height:1;
-  color:#111;
-}
-.tile-value{
+.video-status{
   position:absolute;
-  left:10px;
-  bottom:4px;
-  font-size:29px;
-  font-weight:700;
-  letter-spacing:-.04em;
-  line-height:1;
+  inset:0;
   display:flex;
-  align-items:flex-start;
-  gap:1px;
-}
-.tile-value sup{
-  font-size:.62em;
-  font-weight:700;
-  line-height:1;
-  top:0;
-  position:relative;
-}
-.tile-unit{
-  font-family:var(--mono);
-  font-size:11px;
-  font-weight:400;
-  letter-spacing:-.02em;
-  align-self:flex-end;
-  padding-bottom:3px;
-  margin-left:4px;
-}
-.swatch{
-  position:absolute;
-  top:7px;right:12px;
-  width:143px;height:103px;
-  background:var(--yellow);
-}
-.spark{
-  position:absolute;
-  top:6px;right:8px;
-  width:28px;height:28px;
-  color:#111;
-}
-.delta{
-  position:absolute;
-  right:10px;bottom:6px;
-  font-family:var(--mono);
-  font-size:13px;
-  letter-spacing:-.03em;
-  line-height:1;
-  color:var(--blue);
-}
-
-.tile-media{
-  position:absolute;
-  top:7px;left:10px;
-  width:103px;height:103px;
-  object-fit:cover;
-  border-radius:2px;
-}
-.badge{
-  position:absolute;
-  top:7px;left:126px;
-  display:inline-flex;
-  align-items:center;
-  height:16px;
-  padding:0 9px;
-  border-radius:999px;
-  background:var(--yellow);
-  font-family:var(--mono);
-  font-size:11px;
-  letter-spacing:-.02em;
-  line-height:1;
-  color:#111;
-}
-.tile-note{
-  position:absolute;
-  left:126px;right:10px;bottom:5px;
-  margin:0;
-  font-size:12px;
-  font-weight:700;
-  line-height:18px;
-  letter-spacing:-.045em;
-}
-
-/* chart panel */
-
-.chart{
-  position:relative;
-  margin-top:14px;
-  height:302px;
-  background:#fff;
-  border-radius:6px;
-  padding:16px 17px;
-}
-.chart-title{
-  font-family:var(--mono);
-  font-size:11px;
-  letter-spacing:-.035em;
-  line-height:1;
-  color:#111;
-}
-
-.plot{
-  position:absolute;
-  left:47px;right:23px;
-  top:60.5px;
-  height:197.5px;             /* 240 gridline -> baseline */
-}
-.plot .gridline{
-  position:absolute;
-  left:-3px;right:0;
-  height:1px;
-  background:var(--grid);
-}
-.plot .ylabel{
-  position:absolute;
-  right:calc(100% + 6px);
-  transform:translateY(-50%);
-  font-family:var(--mono);
-  font-size:11px;
-  line-height:1;
-  color:var(--gray);
-  white-space:nowrap;
-}
-.bars{
-  position:absolute;
-  inset:auto 0 0 0;
-  height:197.5px;
-  display:flex;
-  align-items:flex-end;
-  justify-content:space-between;
-}
-.bars i{
-  display:block;
-  width:3px;
-  background:var(--ink);
-}
-.peak-pill{
-  position:absolute;
-  display:inline-flex;
+  flex-direction:column;
   align-items:center;
   justify-content:center;
-  width:32px;height:17px;
-  border-radius:999px;
-  background:var(--yellow);
-  font-family:var(--mono);
-  font-size:11px;
-  line-height:1;
-  color:#111;
-  transform:translateX(-50%);
+  gap:12px;
+  pointer-events:none;
 }
-.xlabel{
-  position:absolute;
-  top:calc(100% + 11px);
-  transform:translateX(-50%);
-  font-family:var(--mono);
-  font-size:11px;
-  line-height:1;
-  color:var(--gray);
-  white-space:nowrap;
+.video-play{
+  display:grid;
+  place-items:center;
+  width:72px;
+  height:72px;
+  border:1px solid rgba(255,255,255,.65);
+  border-radius:50%;
+  background:rgba(0,0,0,.7);
+  color:#fff;
+  box-shadow:0 4px 24px rgba(0,0,0,.2);
 }
+.video-play svg{width:28px;height:28px;margin-left:4px}
 
 /* ---------- footer ---------- */
 
@@ -455,6 +272,10 @@ h1{
   }
   .cta-row{margin-top:22px}
   .shot-area{margin-top:51px}
+  .video-preview{border-radius:12px}
+  .video-status{gap:8px}
+  .video-play{width:48px;height:48px}
+  .video-play svg{width:20px;height:20px}
 
   .colophon{text-align:center}
   .footer-bleed{margin-top:16px}
@@ -499,56 +320,14 @@ h1{
     </div>
 
     <div class="shot-area wrap">
-      <div class="shot-fit">
-        <div class="shot" role="img" aria-label="cabinex dashboard preview showing daily impact metrics and a carbon emissions trend chart">
-          <h2>Good morning, Acme Inc</h2>
-          <p class="shot-sub">Your daily impact metrics are ready to review.</p>
-
-          <div class="tiles">
-            <div class="tile">
-              <div class="tile-label">192,000 tCO₂e</div>
-              <div class="swatch"></div>
-              <div class="tile-value">56<sup>%</sup></div>
-            </div>
-
-            <div class="tile">
-              <div class="tile-label">Energy consumption</div>
-              <svg class="spark" viewBox="0 0 28 28" aria-hidden="true">
-                <g stroke="currentColor" stroke-width="1.4" stroke-linecap="round">
-                  <line x1="14" y1="3" x2="14" y2="25"/>
-                  <line x1="5.5" y1="7" x2="22.5" y2="21"/>
-                  <line x1="22.5" y1="7" x2="5.5" y2="21"/>
-                </g>
-              </svg>
-              <div class="tile-value">583.7<span class="tile-unit">MWh</span></div>
-              <div class="delta">↓12.4%</div>
-            </div>
-
-            <div class="tile">
-              <img class="tile-media" src="assets/moss.jpg" alt="" width="206" height="206" loading="lazy" decoding="async">
-              <span class="badge">Forecast</span>
-              <p class="tile-note">You're 16% off your<br>2027 emissions goal</p>
-            </div>
-          </div>
-
-          <div class="chart">
-            <div class="chart-title">Carbon emissions trend</div>
-            <div class="plot">
-              <div class="gridline" style="top:0"><span class="ylabel" style="top:0">240</span></div>
-              <div class="gridline" style="top:65.75px"><span class="ylabel" style="top:0">160</span></div>
-              <div class="gridline" style="top:131.5px"><span class="ylabel" style="top:0">80</span></div>
-              <div class="gridline" style="top:197px"><span class="ylabel" style="top:0">0</span></div>
-              <div class="bars" id="bars"></div>
-              <span class="peak-pill" style="left:61.1%;top:-8px">220</span>
-              <span class="xlabel" style="left:10.4%">Feb</span>
-              <span class="xlabel" style="left:30.3%">Mar</span>
-              <span class="xlabel" style="left:50.1%">Apr</span>
-              <span class="xlabel" style="left:70%">May</span>
-              <span class="xlabel" style="left:89.8%">Jun</span>
-            </div>
-          </div>
-        </div>
-      </div>
+      <figure class="video-preview">
+        <img src="assets/thumbnail-web.png" alt="Cabinex video preview showing a kitchen design, cabinet selection, business metrics, and a priced kitchen proposal" width="1280" height="720" fetchpriority="high" decoding="async">
+        <figcaption class="video-status">
+          <span class="video-play" aria-hidden="true">
+            <svg viewBox="0 0 24 24" fill="currentColor" focusable="false"><path d="M6 3.5v17L20 12z"/></svg>
+          </span>
+        </figcaption>
+      </figure>
     </div>
   </main>
 </div>
@@ -567,27 +346,6 @@ h1{
 
 <script>
 (function () {
-  /* bars: weekly carbon figures read off the reference chart (0–240 scale) */
-  var V = [51,53,58,63,67,72,76,80,88,94,100,105,113,123,131,139,150,162,
-           172,181,195,209,220,213,203,189,176,166,158,151,146,140,134,131,126,123,119];
-  var host = document.getElementById('bars');
-  var html = '';
-  for (var i = 0; i < V.length; i++) {
-    html += '<i style="height:' + (V[i] / 240 * 197.5).toFixed(1) + 'px"></i>';
-  }
-  host.innerHTML = html;
-
-  /* the dashboard is a fixed 960x608 composition; scale it to the column */
-  var fit = document.querySelector('.shot-fit');
-  function resize() {
-    var s = Math.min(1, fit.clientWidth / 960);
-    fit.style.setProperty('--shot-scale', s);
-    fit.style.height = (608 * s) + 'px';
-  }
-  resize();
-  if (window.ResizeObserver) new ResizeObserver(resize).observe(fit);
-  else window.addEventListener('resize', resize);
-
   /* the wordmark spans exactly the same width as the plank above it */
   var bleed = document.querySelector('.footer-bleed');
   var mark = document.querySelector('.wordmark');
