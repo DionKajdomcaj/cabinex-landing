@@ -262,43 +262,6 @@ img,video{display:block;max-width:100%}
   #how-it-works .mobile .paper .thumb img{display:block; width:100%; height:100%; object-fit:cover; border-radius:4px}
 }
 
-/* ---------- demo video ---------- */
-
-#demo-video{
-  max-width:1600px;
-  margin:0 auto;
-  padding:clamp(96px, 14vh, 150px) var(--gutter) clamp(72px, 10vh, 120px);
-}
-#demo-video .head{display:grid; grid-template-columns:1fr minmax(260px,420px); gap:40px; align-items:end; margin-bottom:48px}
-#demo-video .head h2{font-size:clamp(44px,5.6vw,104px); line-height:.94; letter-spacing:-.055em; font-weight:600; margin:0}
-#demo-video .head p{font-size:clamp(17px,1.3vw,21px); line-height:1.45; color:var(--muted); margin:0 0 8px}
-
-#demo-video .player{position:relative; aspect-ratio:16/9; border-radius:20px; overflow:hidden; background:#121211;
-  box-shadow:0 50px 100px -50px rgba(40,30,20,.45), 0 0 0 1px rgba(20,20,20,.08)}
-#demo-video .player video{position:absolute; inset:0; width:100%; height:100%; object-fit:cover; display:block}
-#demo-video .cover{all:unset; position:absolute; inset:0; cursor:pointer; display:grid; place-items:center;
-  background:center/cover no-repeat var(--poster); transition:opacity .4s ease}
-#demo-video .cover::before{content:""; position:absolute; inset:0; background:radial-gradient(ellipse at center,rgba(0,0,0,.05) 0%,rgba(0,0,0,.45) 100%);
-  transition:background-color .4s}
-#demo-video .cover:hover::before{background-color:rgba(0,0,0,.12)}
-#demo-video .cover:focus-visible{outline:3px solid #fff; outline-offset:-10px; border-radius:20px}
-#demo-video .play{position:relative; display:flex; flex-direction:column; align-items:center; gap:18px; color:#fff}
-#demo-video .play .disc{width:clamp(72px,7vw,112px); height:clamp(72px,7vw,112px); border-radius:50%; background:#fff;
-  display:grid; place-items:center; box-shadow:0 20px 50px rgba(0,0,0,.35); transition:transform .35s cubic-bezier(.3,1.5,.5,1)}
-#demo-video .play .disc svg{width:34%; height:34%; margin-left:8%; fill:var(--accent)}
-#demo-video .cover:hover .disc,#demo-video .cover:focus-visible .disc{transform:scale(1.08)}
-#demo-video .play .txt{font-size:13px; letter-spacing:.12em; text-transform:uppercase; padding:8px 14px; border-radius:999px; background:rgba(10,10,10,.55); backdrop-filter:blur(6px)}
-#demo-video .player.playing .cover{opacity:0; pointer-events:none}
-
-@media (max-width:820px){
-  #demo-video .head{grid-template-columns:1fr; gap:18px; margin-bottom:28px}
-  #demo-video .player{border-radius:14px}
-}
-
-@media (prefers-reduced-motion:reduce){
-  #demo-video .cover,#demo-video .play .disc{transition:none !important}
-}
-
 /* ---------- product intro ---------- */
 
 .intro{
@@ -639,25 +602,6 @@ img,video{display:block;max-width:100%}
     </div>
   </section>
   </section>
-  <section id="demo-video" aria-label="Product demo video">
-    <div class="head">
-      <div>
-        <p class="kicker mono">See it in action</p>
-        <h2 class="reveal">From empty room to priced proposal.</h2>
-      </div>
-      <p class="reveal">The whole flow, start to finish, in under a minute.</p>
-    </div>
-
-    <div class="player" id="demo-player" style="--poster:url('assets/demo-poster.jpg')">
-      <video id="demo-vid" playsinline preload="none" controls></video>
-      <button class="cover" id="demo-cover" type="button" aria-label="Play the Cabinex demo video">
-        <span class="play">
-          <span class="disc"><svg aria-hidden="true" viewBox="0 0 24 24"><path d="M7 4.5v15l12.5-7.5z"></path></svg></span>
-          <span class="txt mono">Watch the demo, 1 min</span>
-        </span>
-      </button>
-    </div>
-  </section>
 
   <section class="intro" id="product" aria-labelledby="intro-title">
     <p class="kicker mono">Product</p>
@@ -941,28 +885,6 @@ img,video{display:block;max-width:100%}
         bookVisible = entries[0].isIntersecting;
         if (bookVisible && !bookPlaying) { bookPlaying = true; bookPlay(); }
       }, { threshold: .45 }).observe(document.querySelector('#book-demo .board'));
-    }
-  }
-
-  /* demo video: click the poster to play inline, cover fades out, poster
-     returns when it ends, and it pauses if scrolled out of view */
-  var demoPlayer = document.getElementById('demo-player');
-  var demoVid = document.getElementById('demo-vid');
-  var demoCover = document.getElementById('demo-cover');
-  if (demoPlayer && demoVid && demoCover) {
-    demoCover.addEventListener('click', function () {
-      if (!demoVid.getAttribute('src')) return;
-      demoPlayer.classList.add('playing');
-      demoVid.play().catch(function () { demoPlayer.classList.remove('playing'); });
-    });
-    demoVid.addEventListener('ended', function () {
-      demoPlayer.classList.remove('playing');
-      demoVid.currentTime = 0;
-    });
-    if ('IntersectionObserver' in window) {
-      new IntersectionObserver(function (entries) {
-        if (!entries[0].isIntersecting && !demoVid.paused) demoVid.pause();
-      }, { threshold: .2 }).observe(demoPlayer);
     }
   }
 
